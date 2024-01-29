@@ -1,3 +1,8 @@
+1.6.0-3 (SIGNAL AI) (2024-01-29)
+--------------------------------
+
+- Hardcode `client_encoding=utf-8` in the `psycopg` connection string to address <https://github.com/psycopg/psycopg/issues/122>.
+
 1.6.0-2 (SIGNAL AI) (2024-01-12)
 --------------------------------
 
