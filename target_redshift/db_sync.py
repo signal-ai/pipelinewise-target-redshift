@@ -325,12 +325,13 @@ class DbSync:
             self.flatten_schema = flatten_schema(stream_schema_message['schema'], max_level=self.data_flattening_max_level)
 
     def open_connection(self):
-        conn_string = "host='{}' dbname='{}' user='{}' password='{}' port='{}'".format(
+        conn_string = "host='{}' dbname='{}' user='{}' password='{}' port='{}' client_encoding='{}'".format(
             self.connection_config['host'],
             self.connection_config['dbname'],
             self.connection_config['user'],
             self.connection_config['password'],
-            self.connection_config['port']
+            self.connection_config['port'],
+            "utf-8",
         )
 
         return psycopg.connect(conn_string)
