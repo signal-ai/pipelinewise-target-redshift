@@ -1,22 +1,22 @@
 #!/usr/bin/env python3
 
 import argparse
+import bz2
+import copy
+import gzip
 import io
 import json
 import os
 import sys
-import copy
-import gzip
-import bz2
-import zstandard as zstd
 from datetime import datetime
 from decimal import Decimal
+from itertools import islice
 from tempfile import mkstemp
 
+import zstandard as zstd
 from joblib import Parallel, delayed, parallel_backend
 from jsonschema import Draft7Validator, FormatChecker
 from singer import get_logger
-from itertools import islice
 
 from target_redshift.db_sync import DbSync
 
@@ -346,7 +346,7 @@ def flush_streams(
 
 
 def load_stream_batch(stream, records_to_load, row_count, db_sync, delete_rows=False, compression=None, slices=None, temp_dir=None):
-    # Load into redshift                                            
+    # Load into redshift
     try:
         if row_count[stream] > 0:
             flush_records(stream, records_to_load, row_count[stream], db_sync, compression, slices, temp_dir)
@@ -411,7 +411,7 @@ def flush_records(stream, records_to_load, row_count, db_sync, compression=None,
     for chunk_number, chunk in enumerate(chunks, start=1):
         _, csv_file = mkstemp(suffix=file_extension + "." + str(chunk_number), prefix=f'{stream}_', dir=temp_dir)
         csv_files = csv_files + [csv_file]
-        with open_method(csv_file, "w+b") as csv_f:
+        with open_method(csv_file, "wb") as csv_f:
             for record in chunk:
                 csv_line = db_sync.record_to_csv_line(record)
                 csv_f.write(bytes(csv_line + "\n", "UTF-8"))
