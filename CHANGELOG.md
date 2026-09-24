@@ -1,3 +1,8 @@
+1.6.0-5 (SIGNAL AI) (2026-09-24)
+--------------------------------
+
+- Fix `AttributeError: 'NoneType' object has no attribute 'get'` in `flush_streams()` when a tap emits no `STATE` message and a run crosses `batch_size_rows`
+
 1.6.0-4 (SIGNAL AI) (2024-01-30)
 --------------------------------
 
